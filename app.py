@@ -66,19 +66,35 @@ if st.session_state.page == 'checklist':
             yes_no = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
             answers[row['Checklist']] = yes_no
 
-    # Function to create PDF
+    # Function to create PDF in table format
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
         pdf.add_font('DejaVu', '', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', uni=True)
         pdf.set_font('DejaVu', '', 12)
-        
-        pdf.cell(200, 10, txt=f"Checklist Report - {department}", ln=True, align='C')
+
+        # Title
+        pdf.cell(0, 10, f"Checklist Report - {department}", ln=True, align='C')
         pdf.ln(10)
 
+        # Table header
+        pdf.set_font('DejaVu', 'B', 12)
+        pdf.cell(130, 10, "Checklist Item", border=1, align='C')
+        pdf.cell(30, 10, "YES", border=1, align='C')
+        pdf.cell(30, 10, "NO", border=1, align='C')
+        pdf.ln()
+
+        # Table body
+        pdf.set_font('DejaVu', '', 12)
         for item, answer in answers.items():
-            pdf.multi_cell(0, 10, f"{item}\nAnswer: {answer}")
-            pdf.ln(2)
+            pdf.cell(130, 10, item, border=1)
+            if answer == "YES":
+                pdf.cell(30, 10, "✔️", border=1, align='C')
+                pdf.cell(30, 10, "", border=1)
+            else:
+                pdf.cell(30, 10, "", border=1)
+                pdf.cell(30, 10, "✔️", border=1, align='C')
+            pdf.ln()
 
         pdf_path = "Checklist_Report.pdf"
         pdf.output(pdf_path)
