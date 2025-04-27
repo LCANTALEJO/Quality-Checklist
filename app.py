@@ -82,40 +82,46 @@ if st.session_state.page == 'checklist':
 
         # Table header
         pdf.set_font('DejaVu', 'B', 12)
-        pdf.cell(110, 10, "Checklist Item", border=1, align='C')
-        pdf.cell(40, 10, "YES", border=1, align='C')
-        pdf.cell(40, 10, "NO", border=1, align='C')
+        checklist_width = 110
+        yes_width = 40
+        no_width = 40
+        line_height = 8
+
+        pdf.cell(checklist_width, 10, "Checklist Item", border=1, align='C')
+        pdf.cell(yes_width, 10, "YES", border=1, align='C')
+        pdf.cell(no_width, 10, "NO", border=1, align='C')
         pdf.ln()
 
         # Table body
         pdf.set_font('DejaVu', '', 12)
         for item, answer in answers.items():
-            line_height = 8
-            checklist_width = 110
-            yes_width = 40
-            no_width = 40
-
-            # Save current position
             x_start = pdf.get_x()
             y_start = pdf.get_y()
 
-            # Draw checklist item with wrapping
+            # Draw Checklist Item
             pdf.multi_cell(checklist_width, line_height, item, border=1)
 
-            # Move to the right for YES/NO columns
+            # Height of the checklist cell (after wrapping)
             y_end = pdf.get_y()
+            cell_height = y_end - y_start
+
+            # Go back to start of YES column
             pdf.set_xy(x_start + checklist_width, y_start)
 
-            height = y_end - y_start
-
+            # Draw YES cell
             if answer == "YES":
-                pdf.multi_cell(yes_width, height, "✔️", border=1, align='C')
-                pdf.set_xy(x_start + checklist_width + yes_width, y_start)
-                pdf.multi_cell(no_width, height, "", border=1, align='C')
+                pdf.cell(yes_width, cell_height, "✔️", border=1, align='C')
             else:
-                pdf.multi_cell(yes_width, height, "", border=1, align='C')
-                pdf.set_xy(x_start + checklist_width + yes_width, y_start)
-                pdf.multi_cell(no_width, height, "✔️", border=1, align='C')
+                pdf.cell(yes_width, cell_height, "", border=1, align='C')
+
+            # Draw NO cell
+            if answer == "NO":
+                pdf.cell(no_width, cell_height, "✔️", border=1, align='C')
+            else:
+                pdf.cell(no_width, cell_height, "", border=1, align='C')
+
+            # Move to next line
+            pdf.ln()
 
         pdf_path = "Checklist_Report.pdf"
         pdf.output(pdf_path)
