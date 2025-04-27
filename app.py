@@ -95,25 +95,29 @@ if st.session_state.page == 'checklist':
         # Table body
         pdf.set_font('DejaVu', '', 12)
         for item, answer in answers.items():
+            # Calculate how many lines needed for checklist
+            item_lines = pdf.multi_cell(checklist_width, line_height, item, border=0, align='L', split_only=True)
+            max_lines = len(item_lines)
+            row_height = max_lines * line_height
+
+            # Save start x and y
             x_start = pdf.get_x()
             y_start = pdf.get_y()
 
-            # Draw Checklist Item
-            pdf.multi_cell(checklist_width, line_height, item, border=1)
+            # Draw checklist item (bordered)
+            pdf.multi_cell(checklist_width, line_height, item, border=1, align='L')
 
-            y_end = pdf.get_y()
-            cell_height = y_end - y_start
+            # Set position to YES column
+            pdf.set_xy(x_start + checklist_width, y_start)
 
             # Draw YES cell
-            pdf.set_xy(x_start + checklist_width, y_start)
-            pdf.cell(yes_width, cell_height, "✔️" if answer == "YES" else "", border=1, align='C')
+            pdf.cell(yes_width, row_height, "✔️" if answer == "YES" else "", border=1, align='C')
 
             # Draw NO cell
-            pdf.set_xy(x_start + checklist_width + yes_width, y_start)
-            pdf.cell(no_width, cell_height, "✔️" if answer == "NO" else "", border=1, align='C')
+            pdf.cell(no_width, row_height, "✔️" if answer == "NO" else "", border=1, align='C')
 
-            # Move cursor down to next row
-            pdf.set_xy(x_start, y_end)
+            # Move to next row
+            pdf.ln(row_height)
 
         pdf_path = "Checklist_Report.pdf"
         pdf.output(pdf_path)
