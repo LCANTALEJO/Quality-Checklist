@@ -10,6 +10,23 @@ def load_checklist():
 
 df = load_checklist()
 
+# Inject CSS to make radio button labels bigger
+st.markdown(
+    """
+    <style>
+    div.row-widget.stRadio > div{flex-direction:row;}
+    label[data-baseweb="radio"] > div:first-child {
+        transform: scale(1.5); /* Bigger radio circle */
+    }
+    label[data-baseweb="radio"] > div:last-child {
+        font-size: 22px; /* Bigger YES/NO text */
+        padding-left: 8px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Initialize session state
 if 'page' not in st.session_state:
     st.session_state.page = 'select_department'
@@ -42,12 +59,12 @@ if st.session_state.page == 'checklist':
     answers = {}
 
     for idx, row in checklist_items.iterrows():
-        cols = st.columns([5, 1, 1])  # Wide column for question, two narrow for buttons
+        cols = st.columns([5, 2])  # Adjusted width for more breathing space
         with cols[0]:
-            st.write(f"{idx+1}. {row['Checklist']}")
+            st.write(f"**{idx+1}. {row['Checklist']}**")
         with cols[1]:
-            yes = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
-            answers[row['Checklist']] = yes
+            yes_no = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
+            answers[row['Checklist']] = yes_no
 
     # Function to create PDF
     def create_pdf(department, answers):
