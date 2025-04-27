@@ -16,10 +16,10 @@ st.markdown(
     <style>
     div.row-widget.stRadio > div{flex-direction:row;}
     label[data-baseweb="radio"] > div:first-child {
-        transform: scale(1.5); /* Bigger radio circle */
+        transform: scale(1.5);
     }
     label[data-baseweb="radio"] > div:last-child {
-        font-size: 22px; /* Bigger YES/NO text */
+        font-size: 22px;
         padding-left: 8px;
     }
     </style>
@@ -59,7 +59,7 @@ if st.session_state.page == 'checklist':
     answers = {}
 
     for idx, row in checklist_items.iterrows():
-        cols = st.columns([5, 2])  # Adjusted width for more breathing space
+        cols = st.columns([5, 2])
         with cols[0]:
             st.write(f"**{idx+1}. {row['Checklist']}**")
         with cols[1]:
@@ -70,7 +70,8 @@ if st.session_state.page == 'checklist':
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
-        pdf.set_font("Arial", size=12)
+        pdf.add_font('DejaVu', '', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', uni=True)
+        pdf.set_font('DejaVu', '', 12)
         
         pdf.cell(200, 10, txt=f"Checklist Report - {department}", ln=True, align='C')
         pdf.ln(10)
@@ -84,10 +85,12 @@ if st.session_state.page == 'checklist':
         return pdf_path
 
     if st.button("Generate PDF Report"):
-        pdf_file = create_pdf(selected_department, answers)
-        
-        with open(pdf_file, "rb") as f:
-            st.download_button("Download PDF", f, file_name="Checklist_Report.pdf")
+        try:
+            pdf_file = create_pdf(selected_department, answers)
+            with open(pdf_file, "rb") as f:
+                st.download_button("Download PDF", f, file_name="Checklist_Report.pdf")
+        except Exception as e:
+            st.error(f"PDF Generation Error: {e}")
 
     if st.button("🔙 Go back to Department Selection"):
         st.session_state.page = 'select_department'
