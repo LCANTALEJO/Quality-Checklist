@@ -42,8 +42,12 @@ if st.session_state.page == 'checklist':
     answers = {}
 
     for idx, row in checklist_items.iterrows():
-        answer = st.radio(f"{row['Checklist']}", ["YES", "NO"], key=idx)
-        answers[row['Checklist']] = answer
+        cols = st.columns([5, 1, 1])  # Wide column for question, two narrow for buttons
+        with cols[0]:
+            st.write(f"{idx+1}. {row['Checklist']}")
+        with cols[1]:
+            yes = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
+            answers[row['Checklist']] = yes
 
     # Function to create PDF
     def create_pdf(department, answers):
