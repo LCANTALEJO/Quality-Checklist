@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from fpdf import FPDF
+import textwrap
 
 # Load the checklist
 @st.cache_data
@@ -66,7 +67,7 @@ if st.session_state.page == 'checklist':
             yes_no = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
             answers[row['Checklist']] = yes_no
 
-    # Function to create PDF in table format
+    # Function to create PDF properly aligned
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
@@ -75,48 +76,50 @@ if st.session_state.page == 'checklist':
         pdf.add_font('DejaVu', '', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', uni=True)
         pdf.add_font('DejaVu', 'B', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', uni=True)
 
-        # Title
         pdf.set_font('DejaVu', 'B', 14)
         pdf.cell(0, 10, f"Checklist Report - {department}", ln=True, align='C')
         pdf.ln(10)
 
-        # Table header
         pdf.set_font('DejaVu', 'B', 12)
         checklist_width = 110
         yes_width = 40
         no_width = 40
         line_height = 8
+        char_per_line = 60  # Roughly based on font size and width
 
         pdf.cell(checklist_width, 10, "Checklist Item", border=1, align='C')
         pdf.cell(yes_width, 10, "YES", border=1, align='C')
         pdf.cell(no_width, 10, "NO", border=1, align='C')
         pdf.ln()
 
-        # Table body
         pdf.set_font('DejaVu', '', 12)
-        for item, answer in answers.items():
-            # Calculate how many lines needed for checklist
-            item_lines = pdf.multi_cell(checklist_width, line_height, item, border=0, align='L', split_only=True)
-            max_lines = len(item_lines)
-            row_height = max_lines * line_height
 
-            # Save start x and y
+        for item, answer in answers.items():
+            # Wrap checklist item manually
+            wrapped_text = textwrap.wrap(item, width=char_per_line)
+
+            max_lines = len(wrapped_text)
+            row_height = line_height * max_lines
+
             x_start = pdf.get_x()
             y_start = pdf.get_y()
 
-            # Draw checklist item (bordered)
-            pdf.multi_cell(checklist_width, line_height, item, border=1, align='L')
+            # Draw checklist item manually
+            for i, line in enumerate(wrapped_text):
+                pdf.set_xy(x_start, y_start + i * line_height)
+                pdf.cell(checklist_width, line_height, line, border=1)
 
-            # Set position to YES column
+            # Draw YES cell manually
             pdf.set_xy(x_start + checklist_width, y_start)
+            yes_mark = "✔️" if answer == "YES" else ""
+            pdf.cell(yes_width, row_height, yes_mark, border=1, align='C')
 
-            # Draw YES cell
-            pdf.cell(yes_width, row_height, "✔️" if answer == "YES" else "", border=1, align='C')
+            # Draw NO cell manually
+            pdf.set_xy(x_start + checklist_width + yes_width, y_start)
+            no_mark = "✔️" if answer == "NO" else ""
+            pdf.cell(no_width, row_height, no_mark, border=1, align='C')
 
-            # Draw NO cell
-            pdf.cell(no_width, row_height, "✔️" if answer == "NO" else "", border=1, align='C')
-
-            # Move to next row
+            # Move to next line
             pdf.ln(row_height)
 
         pdf_path = "Checklist_Report.pdf"
