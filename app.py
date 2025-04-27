@@ -10,28 +10,27 @@ def load_checklist():
 
 df = load_checklist()
 
-# Set session state for navigation
-if 'department_selected' not in st.session_state:
-    st.session_state.department_selected = False
+# Initialize session state
+if 'page' not in st.session_state:
+    st.session_state.page = 'select_department'
 if 'selected_department' not in st.session_state:
     st.session_state.selected_department = None
 
 st.title("✅ Department Checklist Form")
 
-# First Page: Department Selection
-if not st.session_state.department_selected:
+# Page 1: Select Department
+if st.session_state.page == 'select_department':
     st.subheader("Please select your Department to begin:")
 
     departments = df['Department'].unique()
     selected_department = st.selectbox("Department", departments)
 
     if st.button("Start Checklist"):
-        st.session_state.department_selected = True
         st.session_state.selected_department = selected_department
-        st.experimental_rerun()
+        st.session_state.page = 'checklist'  # Move to checklist page
 
-# Second Page: Checklist
-else:
+# Page 2: Checklist
+elif st.session_state.page == 'checklist':
     selected_department = st.session_state.selected_department
     st.subheader(f"Checklist for {selected_department}")
 
@@ -72,6 +71,5 @@ else:
 
     # Option to go back
     if st.button("🔙 Go back to Department Selection"):
-        st.session_state.department_selected = False
+        st.session_state.page = 'select_department'
         st.session_state.selected_department = None
-        st.experimental_rerun()
