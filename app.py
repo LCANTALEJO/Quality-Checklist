@@ -20,7 +20,7 @@ st.markdown(
     }
     label[data-baseweb="radio"] > div:last-child {
         font-size: 22px; /* Bigger YES/NO text */
-        padding-left: 50px;
+        padding-left: 8px;
     }
     </style>
     """,
