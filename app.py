@@ -77,7 +77,7 @@ if st.session_state.page == 'checklist':
         pdf.ln(10)
 
         for item, answer in answers.items():
-            pdf.multi_cell(0, 10, f"✔️ {item}\nAnswer: {answer}")
+            pdf.multi_cell(0, 10, f"{item}\nAnswer: {answer}")
             pdf.ln(2)
 
         pdf_path = "Checklist_Report.pdf"
