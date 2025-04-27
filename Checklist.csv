@@ -1,0 +1,45 @@
+﻿Frequency,Department,Checklist
+Upon Arrival of Goods,Receiving/ Incoming Quality,"Confirm product name, batch numbers, quantities, and packaging type against the invoice/delivery documents."
+Upon Arrival of Goods,Receiving/ Incoming Quality,Confirm packing List
+Upon Arrival of Goods,Receiving/ Incoming Quality,"Confirm safety Data Sheets (SDS, especially important for chemicals)"
+Upon Arrival of Goods,Receiving/ Incoming Quality,Confirm certificate of Analysis (CoA) if applicable (some products or lots might require it)
+Upon Arrival of Goods,Receiving/ Incoming Quality,"Confirm the condition of the truck/container (sealed, clean, dry, no odor of spillage)."
+Upon Arrival of Goods,Receiving/ Incoming Quality,"No signs of leakage, dents, damage, punctures, swelling, etc."
+Upon Arrival of Goods,Receiving/ Incoming Quality,"Pallets properly wrapped, not broken."
+Upon Arrival of Goods,Receiving/ Incoming Quality,Labels are intact and readable: 
+Upon Arrival of Goods,Receiving/ Incoming Quality,Remaining shelf life is acceptable
+Upon Arrival of Goods,Receiving/ Incoming Quality,Goods are transferred immediately to proper storage room and conditions
+Upon Arrival of Goods,Receiving/ Incoming Quality,The storage room has temperature of between 22°C to 25°C
+Upon Arrival of Goods,Receiving/ Incoming Quality,The storage room has relative humidity of between 30% to 40%
+Upon Arrival of Goods,Receiving/ Incoming Quality,Confirm goods are not exposed to direct sunlight or windows
+MWF Schedule,Warehouse,The storage room has temperature of between 22°C to 25°C
+MWF Schedule,Warehouse,The storage room has relative humidity of between 30% to 40%
+MWF Schedule,Warehouse,Confirm chemical Spill Tray
+MWF Schedule,Warehouse,Confirm materials is sitting on the shelves or pallet
+MWF Schedule,Warehouse,
+MWF Schedule,Warehouse,Confirm spill Kit Cabinet Present
+Start of the Shift,Production,Confirm machine recipe matches loaded material
+Start of the Shift,Production,The potting room/area has temperature of between 22°C to 25°C
+Start of the Shift,Production,The storage room/area has relative humidity of between 30% to 40%
+Start of the Shift,Production,"Confirm sort: Remove unnecessary tools, materials, or waste from the work area."
+Start of the Shift,Production,Confirm set in Order: Arrange necessary items neatly and label if needed.
+Start of the Shift,Production,"Confirm shine: Wipe down machines, tools, and floor surfaces-- keep everything clean."
+Start of the Shift,Production,"Standardize: Confirm correct locations for materials, tools, and documents are maintained."
+Start of the Shift,Production,Sustain: Do a quick final confirmation if the area still organized and ready for the next operation?
+Start of the Shift,Production,Confirm if the Feeder Mixer is rotating as per set up.
+Start of the Shift,Production,Confirm the actual temperature of the Resin Feeder as per requirements
+Start of the Shift,Quality/ Engineer/ Production,Confirm that the equipment is delivering the correct mixing ratio (5 readings; collect the data)
+Start of the Shift,Quality/ Engineer/ Production,"Prepare and cure cup sample, then confirm and record hardness"
+Start of the Shift,Quality,Confirm material in feeder is not expired
+Start of the Shift,Quality,Calculate the absolute humidity and confirm less than 10g/m3
+Start of the Shift,Maintenance,Dessicant are still in good condition and the color has not changed
+Start of the Shift,Maintenance,"Confirm machine for any visible damage, leaks, or loose parts."
+Start of the Shift,Maintenance,"Confirm power supply is stable, emergency stops are working, and all safety guards are in place."
+Start of the Shift,Maintenance,Correct recipe/program is selected for the loaded material.
+Start of the Shift,Maintenance,"Work area is clean, tools are organized, and waste bins are emptied."
+Start of the Shift,Maintenance,"Confirm mixing chamber and nozzles are clean, and correct static mixer is used"
+Opening of new container,Production,"Confirm wearing of Proper PPE(e.g. face mask, head cover, safety goggles)"
+Opening of new container,Production,Confirm perform homogenization or pre-mixing of Resin
+Opening of new container,Production,Extract small sample of Hardener confirm it is not cloudy and no crystallization
+Opening of new container,Quality,"After homogenization, Density is within +/-0.01g/cm3 using CoA as reference"
+Opening of new container,Production,Confirm that the batch inside the feeder and the fresh material are of the same expiry date
