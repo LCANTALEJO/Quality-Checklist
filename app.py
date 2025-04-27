@@ -66,7 +66,7 @@ if st.session_state.page == 'checklist':
             yes_no = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
             answers[row['Checklist']] = yes_no
 
-    # Function to create clean PDF
+    # Function to create simple straight-line PDF
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
@@ -75,33 +75,17 @@ if st.session_state.page == 'checklist':
         pdf.add_font('DejaVu', '', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', uni=True)
         pdf.add_font('DejaVu', 'B', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', uni=True)
 
-        # Title
-        pdf.set_font('DejaVu', 'B', 14)
+        pdf.set_font('DejaVu', 'B', 16)
         pdf.cell(0, 10, f"Checklist Report - {department}", ln=True, align='C')
         pdf.ln(10)
 
-        # Headers
-        pdf.set_font('DejaVu', 'B', 12)
-        checklist_width = 150
-        answer_width = 40
-        line_height = 8
-
-        pdf.cell(checklist_width, 10, "Checklist Item", border=1, align='C')
-        pdf.cell(answer_width, 10, "Answer", border=1, align='C')
-        pdf.ln()
-
-        # Body
         pdf.set_font('DejaVu', '', 12)
+
         for item, answer in answers.items():
-            mark = "✔️ YES" if answer == "YES" else "❌ NO"
-            pdf.multi_cell(checklist_width, line_height, item, border=1)
-            
-            # Move to right cell
-            x_current = pdf.get_x()
-            y_current = pdf.get_y() - line_height * len(item.split('\n'))
-            pdf.set_xy(x_current + checklist_width, y_current)
-            pdf.cell(answer_width, line_height * len(item.split('\n')), mark, border=1, align='C')
-            pdf.ln()
+            answer_text = "YES" if answer == "YES" else "NO"
+            line = f"{item} — {answer_text}"
+            pdf.multi_cell(0, 8, line)
+            pdf.ln(2)
 
         pdf_path = "Checklist_Report.pdf"
         pdf.output(pdf_path)
