@@ -16,10 +16,10 @@ st.markdown(
     <style>
     div.row-widget.stRadio > div{flex-direction:row;}
     label[data-baseweb="radio"] > div:first-child {
-        transform: scale(1.5); /* Bigger radio circle */
+        transform: scale(3); /* Bigger radio circle */
     }
     label[data-baseweb="radio"] > div:last-child {
-        font-size: 22px; /* Bigger YES/NO text */
+        font-size: 40px; /* Bigger YES/NO text */
         padding-left: 8px;
     }
     </style>
