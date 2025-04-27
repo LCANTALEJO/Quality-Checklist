@@ -23,11 +23,15 @@ if st.session_state.page == 'select_department':
     st.subheader("Please select your Department to begin:")
 
     departments = df['Department'].unique()
-    selected_department = st.selectbox("Department", departments)
 
-    if st.button("Start Checklist"):
-        st.session_state.selected_department = selected_department
-        st.session_state.page = 'checklist'  # Move to checklist page
+    # Start form
+    with st.form("department_form"):
+        selected_department = st.selectbox("Department", departments)
+        start = st.form_submit_button("Start Checklist")
+        
+        if start:
+            st.session_state.selected_department = selected_department
+            st.session_state.page = 'checklist'
 
 # Page 2: Checklist
 elif st.session_state.page == 'checklist':
