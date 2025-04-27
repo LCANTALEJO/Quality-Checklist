@@ -82,22 +82,40 @@ if st.session_state.page == 'checklist':
 
         # Table header
         pdf.set_font('DejaVu', 'B', 12)
-        pdf.cell(130, 10, "Checklist Item", border=1, align='C')
-        pdf.cell(30, 10, "YES", border=1, align='C')
-        pdf.cell(30, 10, "NO", border=1, align='C')
+        pdf.cell(110, 10, "Checklist Item", border=1, align='C')
+        pdf.cell(40, 10, "YES", border=1, align='C')
+        pdf.cell(40, 10, "NO", border=1, align='C')
         pdf.ln()
 
         # Table body
         pdf.set_font('DejaVu', '', 12)
         for item, answer in answers.items():
-            pdf.cell(130, 10, item, border=1)
+            line_height = 8
+            checklist_width = 110
+            yes_width = 40
+            no_width = 40
+
+            # Save current position
+            x_start = pdf.get_x()
+            y_start = pdf.get_y()
+
+            # Draw checklist item with wrapping
+            pdf.multi_cell(checklist_width, line_height, item, border=1)
+
+            # Move to the right for YES/NO columns
+            y_end = pdf.get_y()
+            pdf.set_xy(x_start + checklist_width, y_start)
+
+            height = y_end - y_start
+
             if answer == "YES":
-                pdf.cell(30, 10, "✔️", border=1, align='C')
-                pdf.cell(30, 10, "", border=1)
+                pdf.multi_cell(yes_width, height, "✔️", border=1, align='C')
+                pdf.set_xy(x_start + checklist_width + yes_width, y_start)
+                pdf.multi_cell(no_width, height, "", border=1, align='C')
             else:
-                pdf.cell(30, 10, "", border=1)
-                pdf.cell(30, 10, "✔️", border=1, align='C')
-            pdf.ln()
+                pdf.multi_cell(yes_width, height, "", border=1, align='C')
+                pdf.set_xy(x_start + checklist_width + yes_width, y_start)
+                pdf.multi_cell(no_width, height, "✔️", border=1, align='C')
 
         pdf_path = "Checklist_Report.pdf"
         pdf.output(pdf_path)
