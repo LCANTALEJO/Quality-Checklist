@@ -105,7 +105,7 @@ if st.session_state.page == 'checklist':
             y_end = pdf.get_y()
             cell_height = y_end - y_start
 
-            # Now manually draw YES and NO at the correct X positions
+            # Draw YES and NO properly
             pdf.set_xy(x_start + checklist_width, y_start)
             if answer == "YES":
                 pdf.cell(yes_width, cell_height, "✔️", border=1, align='C')
@@ -118,13 +118,14 @@ if st.session_state.page == 'checklist':
             else:
                 pdf.cell(no_width, cell_height, "", border=1, align='C')
 
-            # Move cursor down for next row
+            # Move to next line
             pdf.set_y(y_end)
 
-    pdf_path = "Checklist_Report.pdf"
-    pdf.output(pdf_path)
-    return pdf_path
+        pdf_path = "Checklist_Report.pdf"
+        pdf.output(pdf_path)
+        return pdf_path
 
+    # Correctly outside the function now
     if st.button("Generate PDF Report"):
         try:
             pdf_file = create_pdf(selected_department, answers)
