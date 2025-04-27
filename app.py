@@ -98,34 +98,32 @@ if st.session_state.page == 'checklist':
             x_start = pdf.get_x()
             y_start = pdf.get_y()
 
-            # Draw Checklist Item
+            # Draw Checklist Item (multi-line)
             pdf.multi_cell(checklist_width, line_height, item, border=1)
 
-            # Height of the checklist cell (after wrapping)
+            # Save end y position
             y_end = pdf.get_y()
             cell_height = y_end - y_start
 
-            # Go back to start of YES column
+            # Now manually draw YES and NO at the correct X positions
             pdf.set_xy(x_start + checklist_width, y_start)
-
-            # Draw YES cell
             if answer == "YES":
                 pdf.cell(yes_width, cell_height, "✔️", border=1, align='C')
             else:
                 pdf.cell(yes_width, cell_height, "", border=1, align='C')
 
-            # Draw NO cell
+            pdf.set_xy(x_start + checklist_width + yes_width, y_start)
             if answer == "NO":
                 pdf.cell(no_width, cell_height, "✔️", border=1, align='C')
             else:
                 pdf.cell(no_width, cell_height, "", border=1, align='C')
 
-            # Move to next line
-            pdf.ln()
+            # Move cursor down for next row
+            pdf.set_y(y_end)
 
-        pdf_path = "Checklist_Report.pdf"
-        pdf.output(pdf_path)
-        return pdf_path
+    pdf_path = "Checklist_Report.pdf"
+    pdf.output(pdf_path)
+    return pdf_path
 
     if st.button("Generate PDF Report"):
         try:
