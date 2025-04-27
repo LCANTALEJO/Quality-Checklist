@@ -19,7 +19,7 @@ st.markdown(
         transform: scale(1.5); /* Bigger radio circle */
     }
     label[data-baseweb="radio"] > div:last-child {
-        font-size: 40px; /* Bigger YES/NO text */
+        font-size: 80px; /* Bigger YES/NO text */
         padding-left: 8px;
     }
     </style>
