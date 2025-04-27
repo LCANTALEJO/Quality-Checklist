@@ -70,10 +70,13 @@ if st.session_state.page == 'checklist':
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
+
+        # Register fonts
         pdf.add_font('DejaVu', '', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', uni=True)
-        pdf.set_font('DejaVu', '', 12)
+        pdf.add_font('DejaVu', 'B', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', uni=True)
 
         # Title
+        pdf.set_font('DejaVu', 'B', 14)
         pdf.cell(0, 10, f"Checklist Report - {department}", ln=True, align='C')
         pdf.ln(10)
 
