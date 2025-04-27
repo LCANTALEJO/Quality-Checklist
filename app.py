@@ -66,7 +66,7 @@ if st.session_state.page == 'checklist':
             yes_no = st.radio("", ["YES", "NO"], key=f"answer_{idx}", horizontal=True)
             answers[row['Checklist']] = yes_no
 
-    # Function to create simple straight-line PDF
+    # Function to create clean numbered PDF
     def create_pdf(department, answers):
         pdf = FPDF()
         pdf.add_page()
@@ -81,9 +81,9 @@ if st.session_state.page == 'checklist':
 
         pdf.set_font('DejaVu', '', 12)
 
-        for item, answer in answers.items():
+        for idx, (item, answer) in enumerate(answers.items(), start=1):
             answer_text = "YES" if answer == "YES" else "NO"
-            line = f"{item} — {answer_text}"
+            line = f"{idx}. {item} — {answer_text}"
             pdf.multi_cell(0, 8, line)
             pdf.ln(2)
 
