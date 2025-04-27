@@ -18,10 +18,6 @@ if 'selected_department' not in st.session_state:
 
 st.title("✅ Department Checklist Form")
 
-# Early page switching
-if 'start_clicked' not in st.session_state:
-    st.session_state.start_clicked = False
-
 # Page 1: Select Department
 if st.session_state.page == 'select_department':
     st.subheader("Please select your Department to begin:")
@@ -34,14 +30,10 @@ if st.session_state.page == 'select_department':
         
         if start:
             st.session_state.selected_department = selected_department
-            st.session_state.start_clicked = True
-
-    if st.session_state.start_clicked:
-        st.session_state.page = 'checklist'
-        st.experimental_rerun()
+            st.session_state.page = 'checklist'
 
 # Page 2: Checklist
-elif st.session_state.page == 'checklist':
+if st.session_state.page == 'checklist':
     selected_department = st.session_state.selected_department
     st.subheader(f"Checklist for {selected_department}")
 
@@ -79,4 +71,3 @@ elif st.session_state.page == 'checklist':
     if st.button("🔙 Go back to Department Selection"):
         st.session_state.page = 'select_department'
         st.session_state.selected_department = None
-        st.session_state.start_clicked = False
