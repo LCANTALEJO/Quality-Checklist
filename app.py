@@ -18,33 +18,37 @@ if 'selected_department' not in st.session_state:
 
 st.title("✅ Department Checklist Form")
 
+# Early page switching
+if 'start_clicked' not in st.session_state:
+    st.session_state.start_clicked = False
+
 # Page 1: Select Department
 if st.session_state.page == 'select_department':
     st.subheader("Please select your Department to begin:")
 
     departments = df['Department'].unique()
 
-    # Start form
     with st.form("department_form"):
         selected_department = st.selectbox("Department", departments)
         start = st.form_submit_button("Start Checklist")
         
         if start:
             st.session_state.selected_department = selected_department
-            st.session_state.page = 'checklist'
+            st.session_state.start_clicked = True
+
+    if st.session_state.start_clicked:
+        st.session_state.page = 'checklist'
+        st.experimental_rerun()
 
 # Page 2: Checklist
 elif st.session_state.page == 'checklist':
     selected_department = st.session_state.selected_department
     st.subheader(f"Checklist for {selected_department}")
 
-    # Filter checklist based on department
     checklist_items = df[df['Department'] == selected_department]
 
-    # Initialize answers dictionary
     answers = {}
 
-    # Display checklist items with YES/NO radio buttons
     for idx, row in checklist_items.iterrows():
         answer = st.radio(f"{row['Checklist']}", ["YES", "NO"], key=idx)
         answers[row['Checklist']] = answer
@@ -66,14 +70,13 @@ elif st.session_state.page == 'checklist':
         pdf.output(pdf_path)
         return pdf_path
 
-    # Button to generate PDF
     if st.button("Generate PDF Report"):
         pdf_file = create_pdf(selected_department, answers)
         
         with open(pdf_file, "rb") as f:
             st.download_button("Download PDF", f, file_name="Checklist_Report.pdf")
 
-    # Option to go back
     if st.button("🔙 Go back to Department Selection"):
         st.session_state.page = 'select_department'
         st.session_state.selected_department = None
+        st.session_state.start_clicked = False
